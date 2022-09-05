@@ -13,6 +13,8 @@ import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
+import java.time.Instant;
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -37,6 +39,8 @@ public class EmployeeRepository implements EmployeeRepositoryInterface {
         EmployeeEntity entity = EmployeeEntity.createEntity(createOrUpdateEmployeeDto);
 
         try {
+            entity.setCreationDate(Date.from(Instant.now()));
+
             entityManager.persist(entity);
             entityManager.flush();
         } catch (Exception ex) {

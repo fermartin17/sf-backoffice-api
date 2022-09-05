@@ -4,6 +4,8 @@ public class CreateOrUpdateEmployeeDto {
     private Long id;
     private String name;
 
+    public CreateOrUpdateEmployeeDto(){}
+
     public CreateOrUpdateEmployeeDto(Long id, String name){
         this.id = id;
         this.name = name;
