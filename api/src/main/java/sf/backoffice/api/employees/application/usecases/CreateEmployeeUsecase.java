@@ -2,6 +2,7 @@ package sf.backoffice.api.employees.application.usecases;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import sf.backoffice.api.employees.application.interfaces.CreateEmployeeUsecaseInterface;
 import sf.backoffice.api.employees.commands.CreateEmployeeCommand;
 import sf.backoffice.api.employees.domains.Employee;
 import sf.backoffice.api.employees.domains.dtos.CreateOrUpdateEmployeeDto;
@@ -13,8 +14,8 @@ import javax.transaction.Transactional;
 
 @Service
 @Transactional
-public class CreateEmployeeUsecase implements UsecaseInterface<CreateEmployeeCommand, Employee> {
-    private EmployeeRepositoryInterface employeeRepository;
+public class CreateEmployeeUsecase implements CreateEmployeeUsecaseInterface {
+    private final EmployeeRepositoryInterface employeeRepository;
 
     @Autowired
     public CreateEmployeeUsecase(EmployeeRepositoryInterface employeeRepository){
