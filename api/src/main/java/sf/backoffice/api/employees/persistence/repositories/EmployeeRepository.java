@@ -12,16 +12,12 @@ import sf.backoffice.api.employees.persistence.interfaces.EmployeeRepositoryInte
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
-import javax.persistence.Query;
 import java.time.Instant;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Repository
 public class EmployeeRepository implements EmployeeRepositoryInterface {
-
-    private static final String ENTITY_NAME = "Employee";
     @PersistenceContext
     protected EntityManager entityManager;
 
@@ -53,34 +49,35 @@ public class EmployeeRepository implements EmployeeRepositoryInterface {
 
 
     public List<Employee> getAll() throws EmployeeFailedToObtainException {
-        String hql = "SELECT p FROM " + ENTITY_NAME + " p WHERE p.deleted = 'false'";
-
-        Query query = entityManager.createQuery(hql);
-
-        List<EmployeeEntity> list;
-
+        List<EmployeeEntity> employeeEntityList;
         try {
-            list = (List<EmployeeEntity>) query.getResultList();
+            employeeEntityList = entityManager.createQuery("SELECT b FROM EmployeeEntity b WHERE b.deleted = :deleted", EmployeeEntity.class)
+                    .setParameter("deleted", false)
+                    .getResultList();
+
         } catch (NoResultException ex) {
-            list = null;
+            employeeEntityList = null;
         } catch (Exception ex) {
             throw new EmployeeFailedToObtainException("Failed to obtain all employees.");
         }
 
-        return list.stream().map(elem -> elem.toDomainModel()).collect(Collectors.toList());
+        return Optional.ofNullable(employeeEntityList)
+                .orElse(new ArrayList<EmployeeEntity>())
+                .stream()
+                .map(EmployeeEntity::toDomainModel)
+                .collect(Collectors.toList());
     }
 
 
     public Employee getById(long id) throws EmployeeFailedToObtainException {
-        String hql = "SELECT p FROM " + ENTITY_NAME + " p WHERE p.id = :entityId AND p.deleted = 'false'";
-
-        Query query = entityManager.createQuery(hql)
-                .setParameter("entityId", id);
-
         EmployeeEntity entity;
 
         try {
-            entity = (EmployeeEntity) query.getSingleResult();
+            entity = entityManager.createQuery("SELECT b FROM EmployeeEntity b WHERE b.deleted = :deleted AND b.id = :employeeId", EmployeeEntity.class)
+                    .setParameter("deleted", false)
+                    .setParameter("employeeId", id)
+                    .getSingleResult();
+
         } catch (NoResultException ex) {
             entity = null;
         } catch (Exception ex) {
@@ -89,6 +86,4 @@ public class EmployeeRepository implements EmployeeRepositoryInterface {
 
         return entity.toDomainModel();
     }
-
-
 }

@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import sf.backoffice.api.employees.application.interfaces.ListEmployeesUsecaseInterface;
 import sf.backoffice.api.employees.commands.ListEmployeesCommand;
-import sf.backoffice.api.employees.domains.Employee;
+import sf.backoffice.api.employees.domains.EmployeePresenter;
 
 import javax.ws.rs.core.Response;
 import java.util.List;
@@ -23,13 +23,12 @@ public class ListEmployeesController {
         this.listEmployeesUsecase = listEmployeesUsecase;
     }
 
-
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
     public Response list(){
         try {
             ListEmployeesCommand command = new ListEmployeesCommand();
-            List<Employee> employees = listEmployeesUsecase.execute(command);
+            List<EmployeePresenter> employees = listEmployeesUsecase.execute(command);
 
             return Response.ok(employees)
                     .build();
