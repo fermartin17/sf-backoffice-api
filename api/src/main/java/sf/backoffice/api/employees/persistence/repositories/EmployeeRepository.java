@@ -29,6 +29,7 @@ public class EmployeeRepository implements EmployeeRepositoryInterface {
         EmployeeEntity entity = EmployeeEntity.createEntity(createOrUpdateEmployeeDto);
 
         try {
+            
             entityManager.merge(entity);
         } catch (Exception ex) {
             throw new EmployeeFailedToUpdateException("Failed to update employee in database.");

@@ -8,7 +8,6 @@ import sf.backoffice.api.employees.domains.Employee;
 import sf.backoffice.api.employees.domains.dtos.CreateOrUpdateEmployeeDto;
 import sf.backoffice.api.employees.errors.EmployeeFailedToCreateException;
 import sf.backoffice.api.employees.persistence.interfaces.EmployeeRepositoryInterface;
-import sf.backoffice.api.shared.aplication.usecases.UsecaseInterface;
 
 import javax.transaction.Transactional;
 
@@ -22,6 +21,7 @@ public class CreateEmployeeUsecase implements CreateEmployeeUsecaseInterface {
         this.employeeRepository = employeeRepository;
     }
 
+    @Override
     public Employee execute(CreateEmployeeCommand command) throws EmployeeFailedToCreateException {
         CreateOrUpdateEmployeeDto createOrUpdateEmployeeDto = new CreateOrUpdateEmployeeDto();
         try{

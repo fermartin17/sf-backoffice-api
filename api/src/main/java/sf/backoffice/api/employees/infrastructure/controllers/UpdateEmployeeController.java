@@ -1,7 +1,6 @@
 package sf.backoffice.api.employees.infrastructure.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import sf.backoffice.api.employees.application.interfaces.UpdateEmployeeUsecaseInterface;
